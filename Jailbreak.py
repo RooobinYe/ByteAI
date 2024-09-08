@@ -1,5 +1,8 @@
 import requests
 import json
+from transformers import pipeline
+
+pipe = pipeline("text-classification", model="hubert233/GPTFuzz")
 
 # 读取两个文件的内容
 file1_path = "Examples/JailbreakExamples.txt"
@@ -45,7 +48,9 @@ for example_line in examples:
                     print(f"Content: {filled_content}")
                     print(f"Response: {chat_response}")
                     print(f"Prompt Token Cost: {prompt_token_cost}")
-                    print(f"Output Token Cost: {output_token_cost}\n")
+                    print(f"Output Token Cost: {output_token_cost}")
+                    print(pipe(chat_response))
+                    print("\n")
                 else:
                     print("Error with code:", response_data.get("code"))
             else:
