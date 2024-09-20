@@ -4,24 +4,27 @@ from transformers import pipeline
 
 pipe = pipeline("text-classification", model="hubert233/GPTFuzz")
 
-# 读取两个文件的内容
-file1_path = "Examples/JailbreakExamples.txt"
+file1_path = "Examples/JailbreakExamples.jsonl"
 file2_path = "Examples/JailbreakQuestions.txt"
 
 with open(file1_path, "r", encoding="utf-8") as file:
-    examples = file.readlines()
+    examples = []
+    for line in file:
+        json_obj = json.loads(line.strip())
+        for prompt in json_obj.get("prompts", []):
+            content = prompt.get("content", "")
+            examples.append(content)
 
 with open(file2_path, "r", encoding="utf-8") as file:
     questions = file.readlines()
 
 url = "https://security.bytedance.com/api/challenge/llm/chat"
-token = "7f126e95da43c08b"  # 请替换为你的实际 token
+token = "7f126e95da43c08b"
 headers = {
     "Content-Type": "application/json",
     "token": token,
 }
 
-# 针对每行发送一个请求
 for example_line in examples:
     example_content = example_line.strip()
     if not example_content:  # 跳过空行
