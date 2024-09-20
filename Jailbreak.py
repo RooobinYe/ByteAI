@@ -7,7 +7,9 @@ pipe = pipeline("text-classification", model="hubert233/GPTFuzz")
 file1_path = "Examples/JailbreakExamples.jsonl"
 file2_path = "Examples/JailbreakQuestions.txt"
 
-with open(file1_path, "r", encoding="utf-8") as file:
+file3_path = "Examples/OneTimeJailbreakExamples.jsonl" # 便于测试，只包含一条例子
+
+with open(file3_path, "r", encoding="utf-8") as file:
     examples = []
     for line in file:
         json_obj = json.loads(line.strip())
