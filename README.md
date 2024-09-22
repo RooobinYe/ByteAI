@@ -28,4 +28,8 @@ pip3 install -r requirements.txt
 
 `Examples/Questions.txt` 是辅助文件，来源是官方的题库，请不要修改。
 
+`Examples/OneTimeJailbreakExamples.jsonl` 是为了便于测试而设立的单次测试样本集。
+
 [安全范儿高校挑战赛-ByteAI安全挑战赛 Q&A](https://bytedance.larkoffice.com/docx/EKuudSZByoiiMExqOQ1cVEo9n28)
+
+[json 转 jsonl](https://codebeautify.org/json-to-jsonl-converter)
