@@ -36,22 +36,15 @@ def replace_prompt(prompts, questions):
     return result
 
 
-def count_user_roles(prompts) -> int:
-    # 统计 'role' 为 'user' 的条目数量
-    user_count = sum(1 for entry in prompts if entry.get("role") == "user")
-    return user_count
-
-
 def get_response(prompts):
     prompts_with_questions = replace_prompt(prompts, questions)
     for prompts_with_question in prompts_with_questions:
-        round_count = count_user_roles(prompts_with_question)
         print_prompt_token_cost = []
         print_output_token_cost = []
+        get_response_prompt = (
+            []
+        )  # 记录了单次对话的所有 prompt，包含 user 和 assistant 的
         for prompt_with_question in prompts_with_question:
-            get_response_prompt = (
-                []
-            )  # 记录了单次对话的所有 prompt，包含 user 和 assistant 的
             get_response_prompt.append(prompt_with_question)  # 添加 user 的 prompt
             data = {"chat_req": get_response_prompt}
             response = requests.post(url, headers=headers, data=json.dumps(data))

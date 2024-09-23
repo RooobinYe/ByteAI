@@ -19,6 +19,8 @@ You should install `pytorch` First.
 Then follow the instructions.
 
 ```shell
+pip install -U FlagEmbedding
+pip install peft(这一条按照文档来说应该是不必须的，但是我有个错误通过这样解决了)
 pip3 install -r requirements.txt
 ```
 
