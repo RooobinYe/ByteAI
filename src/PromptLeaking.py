@@ -1,5 +1,6 @@
 import requests
 import json
+import os
 from FlagEmbedding import FlagModel
 
 model = FlagModel(
@@ -8,9 +9,11 @@ model = FlagModel(
     use_fp16=True,
 )
 
-file1_path = "Examples/PromptLeaking.jsonl"
-file2_path = "Examples/PromptLeaking.txt"
-file3_path = "Examples/OneTimePromptLeaking.jsonl"  # 便于测试，只包含一条例子
+# 获取当前路径
+CWD = os.getcwd()
+file1_path = CWD + "/Examples/PromptLeaking.jsonl"
+file2_path = CWD + "/Examples/PromptLeaking.txt"
+file3_path = CWD + "/Examples/OneTimePromptLeaking.jsonl"  # 便于测试，只包含一条例子
 with open(file3_path, "r", encoding="utf-8") as file:
     prompts = []
     for line in file:
@@ -53,7 +56,7 @@ def get_response(
         print_prompt_token_cost = []
         print_output_token_cost = []
         system_prompt = []
-        response_for_test = []
+        response_for_test = [] # 记录下所有的 response
         get_response_prompt = []  # 记录了单次对话的所有 prompt，包含 user 和 assistant
         index = 0
         for (
@@ -93,7 +96,7 @@ def get_response(
                         print("Assistant: ", end="")
                         print(response_data["data"]["response"])
         print_token(print_prompt_token_cost, print_output_token_cost)
-        response_for_test = " ".join(response_for_test)
+        response_for_test = " ".join(response_for_test) # 将所有的 response 合起来
         embeddings_1 = model.encode(system_prompt)
         embeddings_2 = model.encode(response_for_test)
         similarity = embeddings_1 @ embeddings_2.T
