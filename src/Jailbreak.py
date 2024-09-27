@@ -1,8 +1,11 @@
 import requests
 import json
+import csv
+from tqdm import tqdm
 from transformers import pipeline
 
 pipe = pipeline("text-classification", model="hubert233/GPTFuzz")
+
 file1_path = "Examples/JailbreakExamples.jsonl"
 file2_path = "Examples/JailbreakQuestions.txt"
 file3_path = "Examples/OneTimeJailbreakExamples.jsonl"  # 便于测试，只包含一条例子
@@ -38,7 +41,9 @@ def replace_prompt(prompts, questions):
 
 def get_response(prompts):
     prompts_with_questions = replace_prompt(prompts, questions)
-    for prompts_with_question in prompts_with_questions:
+    for prompts_with_question in tqdm(
+        prompts_with_questions, desc="Processing questions"
+    ):
         print_prompt_token_cost = []
         print_output_token_cost = []
         get_response_prompt = (
@@ -63,12 +68,29 @@ def get_response(prompts):
                             "content": response_data["data"]["response"],
                         }
                     )
-                    print("User: ", end="") # 目的是为了不换行
-                    print(prompt_with_question["content"])
-                    print("Assistant: ", end="")
-                    print(response_data["data"]["response"])
-                    print(pipe(response_data["data"]["response"]))
-        print_token(print_prompt_token_cost, print_output_token_cost)
+                    # print("User: ", end="") # 目的是为了不换行
+                    # print(prompt_with_question["content"])
+                    # print("Assistant: ", end="")
+                    # print(response_data["data"]["response"])
+                    data = pipe(response_data["data"]["response"])
+                    # print(data)
+                    label = data[0]["label"]
+                    score = data[0]["score"]
+                    result = [
+                        [
+                            prompt_with_question["content"],
+                            response_data["data"]["response"],
+                            label,
+                            score,
+                        ]
+                    ]
+                    with open(
+                        "result.csv", mode="a", newline="", encoding="utf-8-sig"
+                    ) as file:
+                        writer = csv.writer(file)
+                        # 追加数据到文件
+                        writer.writerows(result)
+        # print_token(print_prompt_token_cost, print_output_token_cost)
 
 
 def print_token(print_prompt_token_cost, print_output_token_cost):
@@ -86,3 +108,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    print("Done!")
