@@ -36,3 +36,15 @@ pip3 install -r requirements.txt
 [安全范儿高校挑战赛-ByteAI安全挑战赛 Q&A](https://bytedance.larkoffice.com/docx/EKuudSZByoiiMExqOQ1cVEo9n28)
 
 [json 转 jsonl](https://codebeautify.org/json-to-jsonl-converter)
+
+## Acknowledgments
+
+Thanks to [@tsglz](https://github.com/tsglz) and [helsome](https://github.com/helsome) for their help.
+
+## Project Archival Notice
+
+Thank you for your interest in this project! This project was designed and developed for [ByteAI](https://byteai.clsadp.com/) and has now been completed. As the competition has ended, this project will no longer be actively developed or maintained, and we have decided to archive it.
+
+The archived project can still be viewed and cloned, but it will no longer accept new issues, pull requests, or comments. If you have any questions or need to reference the code, feel free to view and clone the repository.
+
+Thank you again for your support and understanding!
